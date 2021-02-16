@@ -187,10 +187,10 @@ function checkThisAnswer(n) {
     for (var i = 0; i < options.length; i++) {
         options[i].disabled=true
         if (options[i].checked) {            
-        options[0].parentNode.setAttribute("class","wrong")
+        options[i].parentNode.setAttribute("class","wrong")
 
             if (ques[n].ans == i) {               
-                options[ques[n].ans].parentNode.setAttribute("class","correct")
+                options[i].parentNode.setAttribute("class","correct")
                 return 1
             }
             
