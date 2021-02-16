@@ -190,7 +190,7 @@ function checkThisAnswer(n) {
         options[0].parentNode.setAttribute("class","wrong")
 
             if (ques[n].ans == i) {               
-
+                options[ques[n].ans].parentNode.setAttribute("class","correct")
                 return 1
             }
             
@@ -211,7 +211,7 @@ function showResult(){
     totalQuestions.appendChild(tText)
     resultDiv.appendChild(totalQuestions)
     var percentage= document.createElement('h2')
-    var perText=document.createTextNode("Percentage:\t  "+marks)
+    var perText=document.createTextNode("Percentage:\t  "+marks/q.length*100)
     percentage.appendChild(perText)
     resultDiv.appendChild(percentage)
 
