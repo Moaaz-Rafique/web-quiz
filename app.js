@@ -1,23 +1,32 @@
-var edit=false
+var edit = false
 var ques = []
 var availableTests = []
 var mdb = firebase.database().ref('/')
 mdb.once('value', function (data) {
-    var j=0
-    for (var i in data.val()){
+    var j = 0
+    for (var i in data.val()) {
         console.log(i)
         availableTests.push(i)
         var testBtns = document.getElementById("testBtns")
         var btnDiv = document.createElement('div')
         var btn = document.createElement('button')
         btnDiv.appendChild(btn)
+
         var edtBtn = document.createElement('button')
-        
-        edtBtn.innerHTML="edit button"
+        edtBtn.innerHTML = "Edit"
         btnDiv.appendChild(edtBtn)
-        btn.innerHTML = availableTests[j]+" Quiz"
+        edtBtn.setAttribute('onclick', 'editTest(this)')
+
+        var rmvBtn = document.createElement('button')
+        rmvBtn.innerHTML = "Remove"
+        btnDiv.appendChild(rmvBtn)
+        rmvBtn.setAttribute('onclick', 'rmvTest(this)')
+
+        btn.innerHTML = availableTests[j] + " Quiz"
         btn.setAttribute('onclick', "goToTest(this)")
         btn.setAttribute('id', j)
+        edtBtn.setAttribute('id', j)
+        rmvBtn.setAttribute('id', j)
         j++
         testBtns.appendChild(btnDiv)
     }
@@ -43,47 +52,6 @@ for (var i = 0; i < availableTests.length; i++) {
     testBtns.appendChild(btn)
 }
 testBtns.innerHTML += '<button onclick="signIn()">Sign In To Edit Or Add Tests</button>'
-
-
-function goToTest(btn) {
-    testBtns.style.display='none'
-    var heading = document.getElementById("heading")
-    heading.innerHTML="This is the "+availableTests[btn.id]+" Quiz"
-    console.log(heading)
-
-    var db = firebase.database().ref('/').child(availableTests[btn.id]);
-    console.log("shdhsjd")
-    db.once('value', function (data) {
-        console.log(data.val())
-        ques = data.val()
-    })
-    //    console.log(nameOfTest)
-    var mn = document.getElementById("main")
-    mn.style.display = 'block'
-    
-}
-function start() {
-    interval = setInterval(timer, 10)
-    document.getElementById('startButton').disabled = true
-}
-function submitTest() {
-    pause()
-    submitButton.disabled = true
-
-    for (var i = 0; i < ques.length; i++) {
-        marks += checkThisAnswer(i)        
-    }
-    showResult()
-}
-function pause() {
-    document.getElementById('startButton').onclick = start
-    return clearInterval(interval)
-}
-
-function reset() {
-    location.reload()
-}
-
 var min = 3
 var sec = 0
 var milisec = 0
@@ -137,6 +105,72 @@ function timer() {
         disMin.innerHTML = min
     }
 }
+function editTest(btn) {
+    testBtns.style.display = 'none'
+    var heading = document.getElementById("heading")
+    heading.innerHTML = "This is the " + availableTests[btn.id] + " Quiz"
+    var db = firebase.database().ref('/').child(availableTests[btn.id]);
+    db.once('value', function (data) {
+        console.log(data.val())
+        ques = data.val()
+        showEditableTest(db)
+    })
+    //    console.log(nameOfTest)
+    var mn = document.getElementById("main")
+    mn.style.display = 'block'
+}
+function showEditableTest(db) {
+    for (var i = 0; i < ques.length; i++) {
+        editQuestion(ques[i], i)
+    }
+    var saveBtn = document.createElement('button')
+    saveBtn.innerHTML = 'Save Changes'
+    saveBtn.onclick = function () {
+        
+        for (var i = 0; i < ques.length; i++)
+            db.child(i).set(ques[i])
+    }
+    quesList.appendChild(saveBtn)
+}
+function goToTest(btn) {
+    testBtns.style.display = 'none'
+    var heading = document.getElementById("heading")
+    heading.innerHTML = "This is the " + availableTests[btn.id] + " Quiz"
+    var db = firebase.database().ref('/').child(availableTests[btn.id]);
+    db.once('value', function (data) {
+        console.log(data.val())
+        ques = data.val()
+    })
+    //    console.log(nameOfTest)
+    var mn = document.getElementById("main")
+    mn.style.display = 'block'
+
+    var d = document.getElementById("timerAndStart")
+    d.style.display = 'block'
+}
+function start() {
+    interval = setInterval(timer, 10)
+    document.getElementById('startButton').disabled = true
+}
+function submitTest() {
+    pause()
+    submitButton.disabled = true
+
+    for (var i = 0; i < ques.length; i++) {
+        marks += checkThisAnswer(i)
+    }
+    showResult()
+}
+function pause() {
+    document.getElementById('startButton').onclick = start
+    return clearInterval(interval)
+}
+
+function reset() {
+    location.reload()
+}
+
+
 function startTest() {
     start()
     for (var i = 0; i < ques.length; i++) {
@@ -146,10 +180,6 @@ function startTest() {
 }
 
 function addToQuesList(q, n) {
-    if(edit){
-        editQuestions(q,n)
-        return
-    }
     var quesList = document.getElementById("questionsList")
     var qDiv = document.createElement("div")
     var question = document.createElement("h3")
@@ -241,38 +271,51 @@ document.onkeydown = function (evt) {
         select.style.display = 'none'
     }
 };
-function signIn(){
-    edit=true
+function signIn() {
+    edit = true
 
 }
 
-function editQuestions(q,n){
-    
+function editQuestion(q, n) {
+
     var quesList = document.getElementById("questionsList")
     var qDiv = document.createElement("div")
-    var question = document.createElement("h3")
-    var questionText = document.createTextNode("Q" + (n + 1) + ") " + q.question)
+    var question = document.createElement("span")
+    var questionText = document.createTextNode("Q" + (n + 1) + ")")
     question.appendChild(questionText)
-    var clicked = false
+    var questionTextInput=document.createElement('input')
+    
+    questionTextInput.setAttribute("type", "text")
+    questionTextInput.setAttribute("id", n+"input")
+    questionTextInput.onchange=function(){
+        ques[n].question=this.value
+    }
+    questionTextInput.value=q.question
+    question.appendChild(questionTextInput)
+    // var clicked = false
     var optionsDiv = document.createElement("div")
     for (var i = 0; i < q.options.length; i++) {
         var optionSpan = document.createElement("div")
         var option = document.createElement("input")
+        
         option.setAttribute("type", "radio")
         option.setAttribute("name", "option" + n)
         option.setAttribute("value", i)
-        var optionText = document.createTextNode(q.options[i])
-        option.onclick = function () {
-            if (!clicked) {
-                clicked = true
-                attemptedQuestions++
-                if (attemptedQuestions == ques.length) {
-                    submitButton.disabled = false
-                }
-            }
+        if(i==q.ans){
+            option.checked=true
         }
+        option.onclick=function(){
+            q.ans=this.value
+        }
+        var optionInput=document.createElement('input')
+        optionInput.setAttribute('type','text')
+        optionInput.setAttribute('id',i)
+        optionInput.onchange=function(){
+            q.options[this.id]=this.value
+        }
+        optionInput.value=q.options[i]
         optionSpan.appendChild(option)
-        optionSpan.appendChild(optionText)
+        optionSpan.appendChild(optionInput)
         optionsDiv.appendChild(optionSpan)
     }
     qDiv.setAttribute("class", "qDiv")

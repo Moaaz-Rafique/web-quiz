@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,24 +11,25 @@
     <!-- <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script> -->
 
 
-<!-- TODO: Add SDKs for Firebase products that you want to use
+    <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
 
-<script>
-  // Your web app's Firebase configuration
-  var firebaseConfig = {
-    apiKey: "AIzaSyDhbZioAM1VYTYbqXiv0e7XvaG3OlZg6Yw",
-    authDomain: "web-quiz-5115e.firebaseapp.com",
-    projectId: "web-quiz-5115e",
-    storageBucket: "web-quiz-5115e.appspot.com",
-    messagingSenderId: "914102871539",
-    appId: "1:914102871539:web:6ccb16a176c1fc80731e86"
-  };
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-</script>
+    <script>
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDhbZioAM1VYTYbqXiv0e7XvaG3OlZg6Yw",
+            authDomain: "web-quiz-5115e.firebaseapp.com",
+            projectId: "web-quiz-5115e",
+            storageBucket: "web-quiz-5115e.appspot.com",
+            messagingSenderId: "914102871539",
+            appId: "1:914102871539:web:6ccb16a176c1fc80731e86"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
     <title>Document</title>
 </head>
+
 <body>
     <div id="testBtns">
 
@@ -35,13 +37,17 @@
     <div id="main">
         <h1 id="heading">
         </h1>
-        <div class="stopwatch">
-            <p id="min">00</p>:
-            <p id="sec">00</p>:
-            <p id="milisec">00</p>
-        </div>        
-        <button class="center" id="startButton"onClick="startTest();">Start Test</button>
+        <div id="timerAndStart" style="display: none;">
+            <div class="stopwatch">
+                <p id="min">00</p>:
+                <p id="sec">00</p>:
+                <p id="milisec">00</p>
+            </div>
+            <button class="center" id="startButton" onClick="startTest();">Start Test</button>
+            
+        </div>
         <div id="questionsList" class="qList">
+
         </div>
         <button id="back" onclick="location.reload()">back</button>
         <div id="result">
@@ -49,4 +55,5 @@
     </div>
     <script src="app.js"></script>
 </body>
+
 </html>

@@ -80,7 +80,7 @@ button:disabled{
   height: 100vh;
   overflow: hidden;
 }
-#testBtns button{
+#testBtns div{
   display: block;
   padding: 30px;
   margin: 10px;
