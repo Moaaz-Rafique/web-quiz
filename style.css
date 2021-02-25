@@ -23,7 +23,10 @@
     text-align: center;
     font-size: 50px;
 }
-.main,#questionsList{
+#main{
+  display: none;
+}
+#main,#questionsList{
     width: 90%;
     border: 1px solid red;
     margin: auto;
@@ -67,4 +70,31 @@ button:disabled{
 .wrong{
   text-decoration: line-through;
   color:indianred;    
+}
+.select{
+  background-color: rgba(255, 255, 255, .9);
+  position: fixed;
+  display: none;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+#testBtns button{
+  display: block;
+  padding: 30px;
+  margin: 10px;
+  width: 80%;
+}
+.leftbtn, .rightbtn{
+width: 10%;
+height: 5vh;
+}
+.selectedImage{
+  width: 100%;
+  position: fixed;
+  top: 10%;
+  text-align: center;
+  height: 80vh;
+  margin: auto;
 }

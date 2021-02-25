@@ -5,12 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-database.js"></script>
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.2.9/firebase-auth.js"></script> -->
+
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyDhbZioAM1VYTYbqXiv0e7XvaG3OlZg6Yw",
+    authDomain: "web-quiz-5115e.firebaseapp.com",
+    projectId: "web-quiz-5115e",
+    storageBucket: "web-quiz-5115e.appspot.com",
+    messagingSenderId: "914102871539",
+    appId: "1:914102871539:web:6ccb16a176c1fc80731e86"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
     <title>Document</title>
 </head>
 <body>
-    <div class="main">
-        <h1>
-            This is an Html Quiz
+    <div id="testBtns">
+
+    </div>
+    <div id="main">
+        <h1 id="heading">
         </h1>
         <div class="stopwatch">
             <p id="min">00</p>:
@@ -20,6 +43,7 @@
         <button class="center" id="startButton"onClick="startTest();">Start Test</button>
         <div id="questionsList" class="qList">
         </div>
+        <button id="back" onclick="location.reload()">back</button>
         <div id="result">
         </div>
     </div>
