@@ -125,12 +125,19 @@ function showEditableTest(db) {
     }
     var saveBtn = document.createElement('button')
     saveBtn.innerHTML = 'Save Changes'
+    var addQuesBtn = document.createElement('button')
+    addQuesBtn.innerHTML = 'Add Question'
+    addQuesBtn.onclick = function(){
+        ques.push({question:"",options:[""],ans:"0"})
+        editQuestion(ques[ques.length-1],ques.length-1)
+    }
     saveBtn.onclick = function () {
         
         for (var i = 0; i < ques.length; i++)
             db.child(i).set(ques[i])
     }
-    quesList.appendChild(saveBtn)
+    quesList.appendChild(addQuesBtn)
+    document.getElementById("main").appendChild(saveBtn)
 }
 function goToTest(btn) {
     testBtns.style.display = 'none'
@@ -309,17 +316,67 @@ function editQuestion(q, n) {
         }
         var optionInput=document.createElement('input')
         optionInput.setAttribute('type','text')
-        optionInput.setAttribute('id',i)
+        optionSpan.setAttribute('id',i)
         optionInput.onchange=function(){
-            q.options[this.id]=this.value
+            q.options[this.parentNode.id]=this.value
         }
+        
         optionInput.value=q.options[i]
+        optionRemoveBtn=document.createElement("button")
+        optionRemoveBtn.innerHTML="Remove Option"
+        optionRemoveBtn.onclick=function(){
+            q.options.splice(this.parentNode.id,1)
+            this.parentNode.remove()
+            if(this.parentNode.id>=q.ans)
+                q.ans--
+        }
         optionSpan.appendChild(option)
         optionSpan.appendChild(optionInput)
+        optionSpan.appendChild(optionRemoveBtn)
         optionsDiv.appendChild(optionSpan)
+
+        //.splice(i, 1);
+    }
+    var optionAddButton=document.createElement("button")
+    optionAddButton.innerHTML="Add Option"
+    optionAddButton.onclick = function(){
+        q.options.push("")
+
+        var optionSpan = document.createElement("div")
+        var option = document.createElement("input")
+        
+        option.setAttribute("type", "radio")
+        option.setAttribute("name", "option" + n)
+        option.setAttribute("value", i)
+        if(i==q.ans){
+            option.checked=true
+        }
+        option.onclick=function(){
+            q.ans=this.value
+        }
+        var optionInput=document.createElement('input')
+        optionInput.setAttribute('type','text')
+        optionSpan.setAttribute('id',i)
+        optionInput.onchange=function(){
+            q.options[this.parentNode.id]=this.value
+        }
+        
+        optionInput.value=q.options[i]
+        optionRemoveBtn=document.createElement("button")
+        optionRemoveBtn.innerHTML="Remove Option"
+        optionRemoveBtn.onclick=function(){
+            q.options.splice(this.parentNode.id,1)
+            this.parentNode.remove()
+        }
+        optionSpan.appendChild(option)
+        optionSpan.appendChild(optionInput)
+        optionSpan.appendChild(optionRemoveBtn)
+        optionsDiv.appendChild(optionSpan)
+        i++
     }
     qDiv.setAttribute("class", "qDiv")
     qDiv.appendChild(question)
     qDiv.appendChild(optionsDiv)
     quesList.appendChild(qDiv)
+    qDiv.appendChild(optionAddButton)
 }
