@@ -130,9 +130,11 @@ function showEditableTest(db) {
     addQuesBtn.onclick = function(){
         ques.push({question:"",options:[""],ans:"0"})
         editQuestion(ques[ques.length-1],ques.length-1)
+        quesList.appendChild(addQuesBtn)
+
     }
     saveBtn.onclick = function () {
-        
+        db.remove()
         for (var i = 0; i < ques.length; i++)
             db.child(i).set(ques[i])
     }
@@ -375,8 +377,15 @@ function editQuestion(q, n) {
         i++
     }
     qDiv.setAttribute("class", "qDiv")
+    var rmvQues=document.createElement('button')
+    rmvQues.innerHTML="Remove Button"
+    rmvQues.onclick=function(){
+        ques.splice(n,1)
+        this.parentNode.remove()
+    }
     qDiv.appendChild(question)
     qDiv.appendChild(optionsDiv)
     quesList.appendChild(qDiv)
     qDiv.appendChild(optionAddButton)
+    qDiv.appendChild(rmvQues)
 }
