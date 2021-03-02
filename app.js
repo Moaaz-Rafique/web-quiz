@@ -136,10 +136,12 @@ function editTest(btn) {
     var mn = document.getElementById("main")
     mn.style.display = 'block'
 }function rmvTest(btn) {
+    if(confirm("Your test will be removed (This action cannot be undone)")){
     var db = firebase.database().ref('/').child(availableTests[btn.id]);
     db.remove()
     
     btn.parentNode.remove()
+    }
 }
 function showEditableTest(db) {
     for (var i = 0; i < ques.length; i++) {
