@@ -3,7 +3,9 @@
     padding: 0;
   }
   
-  
+  body{
+    text-align: center;
+  }  
   
   .center:hover {
     color: white;
@@ -100,4 +102,18 @@ height: 5vh;
   text-align: center;
   height: 80vh;
   margin: auto;
+}
+.qDiv button{
+  height: fit-content;
+}
+.qDiv input[type=text]{
+  font-size: 20px;
+  height: 24px;
+  min-width: fit-content;
+  width: 60%;
+}
+#testName{
+  width: auto;
+  height: 50px;
+  font-size: 36px;
 }

@@ -1,4 +1,3 @@
-var edit = false
 var ques = []
 var availableTests = []
 var mdb = firebase.database().ref('/')
@@ -52,7 +51,6 @@ for (var i = 0; i < availableTests.length; i++) {
     btn.setAttribute('id', i)
     testBtns.appendChild(btn)
 }
-testBtns.innerHTML += '<button onclick="signIn()">Sign In To Edit Or Add Tests</button>'
 testBtns.innerHTML += '<button onclick="addTest()">Add New Text</button>'
 var min = 3
 var sec = 0
@@ -165,6 +163,7 @@ function showEditableTest(db) {
 
     }
     saveBtn.onclick = function () {
+        if(confirm("Are you sure you want to save these changes"))
             db.set(ques)
     }
     quesList.appendChild(addQuesBtn)
@@ -309,10 +308,7 @@ document.onkeydown = function (evt) {
         select.style.display = 'none'
     }
 };
-function signIn() {
-    edit = true
 
-}
 
 function editQuestion(q, n) {
 
@@ -397,7 +393,7 @@ function editQuestion(q, n) {
         optionRemoveBtn.innerHTML="Remove Option"
         optionRemoveBtn.onclick=function(){
             q.options.splice(this.parentNode.id,1)
-            this.parentNode.remove()
+            this.parentNode.remove()            
         }
         optionSpan.appendChild(option)
         optionSpan.appendChild(optionInput)
