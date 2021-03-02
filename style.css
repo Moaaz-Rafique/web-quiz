@@ -8,7 +8,9 @@
   .center:hover {
     color: white;
   }
-  
+  #testBtns{
+    margin: auto;
+  }
   .stopwatch {
     padding: 40px;
     padding-bottom: 10px;
@@ -57,6 +59,7 @@
 button{
     margin: auto;
     width: 20%;
+    min-width: fit-content;
     padding: 10px;
     font-size: 20px;
 }
@@ -83,8 +86,8 @@ button:disabled{
 #testBtns div{
   display: block;
   padding: 30px;
-  margin: 10px;
-  width: 80%;
+  margin: auto;
+  width: fit-content;
 }
 .leftbtn, .rightbtn{
 width: 10%;

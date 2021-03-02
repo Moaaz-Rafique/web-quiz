@@ -30,6 +30,7 @@ mdb.once('value', function (data) {
         j++
         testBtns.appendChild(btnDiv)
     }
+    
 })
 
 var attemptedQuestions = 0
@@ -52,6 +53,7 @@ for (var i = 0; i < availableTests.length; i++) {
     testBtns.appendChild(btn)
 }
 testBtns.innerHTML += '<button onclick="signIn()">Sign In To Edit Or Add Tests</button>'
+testBtns.innerHTML += '<button onclick="addTest()">Add New Text</button>'
 var min = 3
 var sec = 0
 var milisec = 0
@@ -105,6 +107,21 @@ function timer() {
         disMin.innerHTML = min
     }
 }
+function addTest(){
+    testBtns.style.display = 'none'
+    var heading = document.getElementById("heading")
+    heading.innerHTML = "This is the <input type='text' id='testName' value='test Name'> Quiz"
+    tstName=document.getElementById("testName")
+    var db = firebase.database().ref('/').child(tstName.value);
+    tstName.onchange=()=>{
+        db = firebase.database().ref('/').child(tstName.value);
+    }
+    ques.push({question:"", options: [""],ans: "0"})
+    showEditableTest(db)
+    //    console.log(nameOfTest)
+    var mn = document.getElementById("main")
+    mn.style.display = 'block'
+}
 function editTest(btn) {
     testBtns.style.display = 'none'
     var heading = document.getElementById("heading")
@@ -118,11 +135,23 @@ function editTest(btn) {
     //    console.log(nameOfTest)
     var mn = document.getElementById("main")
     mn.style.display = 'block'
+}function rmvTest(btn) {
+    var db = firebase.database().ref('/').child(availableTests[btn.id]);
+    db.remove()
+    
+    btn.parentNode.remove()
 }
 function showEditableTest(db) {
     for (var i = 0; i < ques.length; i++) {
         editQuestion(ques[i], i)
     }
+    
+    tstName=document.getElementById("testName")
+    if(tstName)
+    tstName.onchange=()=>{
+        db = firebase.database().ref('/').child(tstName.value);
+    }
+
     var saveBtn = document.createElement('button')
     saveBtn.innerHTML = 'Save Changes'
     var addQuesBtn = document.createElement('button')
@@ -134,9 +163,7 @@ function showEditableTest(db) {
 
     }
     saveBtn.onclick = function () {
-        db.remove()
-        for (var i = 0; i < ques.length; i++)
-            db.child(i).set(ques[i])
+            db.set(ques)
     }
     quesList.appendChild(addQuesBtn)
     document.getElementById("main").appendChild(saveBtn)
@@ -378,7 +405,8 @@ function editQuestion(q, n) {
     }
     qDiv.setAttribute("class", "qDiv")
     var rmvQues=document.createElement('button')
-    rmvQues.innerHTML="Remove Button"
+    rmvQues.innerHTML="Remove Question"
+    rmvQues.style.backgroundColor='rgb(200,100,100)'
     rmvQues.onclick=function(){
         ques.splice(n,1)
         this.parentNode.remove()
